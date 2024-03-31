@@ -38,11 +38,15 @@ class SignupController extends BaseController{
         }
 
         $userModel = new UserModel();
+        $uuid = bin2hex(random_bytes(16));
+        $currentDateTime = date('Y-m-d H:i:s');
 
         $user = [
             'username' => $username,
             'email' => $email,
-            'password' => $password
+            'password' => $password,
+            'uuid'=>$uuid,
+            'created_at' => $currentDateTime,
         ];
 
         $userModel->insert($user);

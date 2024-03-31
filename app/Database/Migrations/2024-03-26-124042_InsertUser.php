@@ -9,7 +9,7 @@ class InsertUser extends Migration
     public function up()
     {
         $this->forge->addField([
-            'userId' => [
+            'user_id' => [
                 'type' => 'INT',
                 'constraint' => 10,
                 'unsigned' => true,
@@ -27,15 +27,32 @@ class InsertUser extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
+            'uuid' => [
+                'type' => 'VARCHAR',
+                'constraint' => 36,
+                'unique' => true,
+            ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'deleted_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
         ]);
 
-        $this->forge->addPrimaryKey('userId');
-        $this->forge->createTable('user');
+        $this->forge->addPrimaryKey('user_id'); 
+        $this->forge->createTable('user_ms');
    
     }
 
     public function down()
     {
-        $this->forge->dropTable('user');
+        $this->forge->dropTable('user_ms');
     }
 }

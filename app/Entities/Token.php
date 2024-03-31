@@ -6,10 +6,10 @@ use CodeIgniter\Entity\Entity;
 class Token extends Entity
 {
     protected $attributes = [
-        'tokenId'   => null,
+        'token_id'   => null,
         'token'     => null,
-        'userId'    => null,
-        'createAt'  => null,
-        'deleteAt'  => null,
+        'uu_id'    => null,
+        'crete_at' => null,
+        'delete_at' => null,
     ];
 }

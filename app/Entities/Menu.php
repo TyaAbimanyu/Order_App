@@ -7,8 +7,11 @@ use CodeIgniter\Entity\Entity;
 class Menu extends Entity
 {
     protected $attributes = [
-        'menuId' => null,
-        'menuName' => '',
-        'menuPrice' => '',
+        'menu_id' => null,
+        'menu_name' => '',
+        'menu_price' => '',
+        'create_at' => null,
+        'update_at' => null,
+        'delete_at' => null,
     ];
 }

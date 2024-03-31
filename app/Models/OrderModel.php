@@ -6,16 +6,17 @@ use App\Entities\Order;
 use CodeIgniter\Model;
 
 class OrderModel extends Model{
-    protected $table = 'order';
-    protected $primaryKey =  'id_order';
+    protected $table = 'order_trs';
+    protected $primaryKey =  'order_id';
 
     protected $returnType = Order::class;
 
-    protected $allowedFields = ['orderTotal', 'orderPrice', 'orderAt', 'updateAt', 'deletAt', 'menu_ID', 'token_ID'];
+    protected $allowedFields = ['order_total', 'total_price', 'order_at', 'update_at', 'delete_at', 'menu_id', 'uu_id'];
 
     protected $useTimestamps = true;
 
-    protected $createdField = 'orderAt';
-    protected $updatedField = 'updateAt';
+    protected $createdField = 'order_at';
+    protected $updatedField = 'update_at';
+    protected $deletedField =  'delete_at';
 
 }

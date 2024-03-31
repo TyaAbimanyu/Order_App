@@ -7,12 +7,12 @@ use CodeIgniter\Model;
 
 class TokenModel extends Model
 {
-    protected $table = 'token';
-    protected $primaryKey = 'tokenId';
+    protected $table = 'token_trs';
+    protected $primaryKey = 'token_id';
     protected $returnType = Token::class;
-    protected $useTimestamps = true;
-    protected $createdField = 'createAt';
-    protected $deletedField = 'deleteAt';
+    protected $useTimestamps = false;
+    protected $createdField = 'created_at';
+    protected $deletedField = 'deleted_at';
 
-    protected $allowedFields = ['token', 'userId', 'createAt', 'deleteAt'];
+    protected $allowedFields = ['token', 'uu_id', 'created_at', 'deleted_at'];
 }

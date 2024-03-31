@@ -9,7 +9,7 @@ class InsertToken extends Migration
     public function up()
     {
         $this->forge->addField([
-        'tokenId' => [
+        'token_id' => [
             'type' => 'INT',
             'constraint' => 10,
             'unsigned' => true,
@@ -19,28 +19,27 @@ class InsertToken extends Migration
             'type' => 'VARCHAR',
             'constraint' => 32,
         ],
-        'user_ID' => [
-            'type' => 'INT',
-            'constraint' => 10,
-            'unsigned' => true,
+        'uu_id' => [
+            'type' => 'VARCHAR',
+            'constraint' => 36,
         ],
-        'createAt' => [
+        'created_at' => [
             'type' => 'DATETIME',
             'null' => true,
         ],
-        'deleteAt' => [
+        'deleted_at' => [
             'type' => 'DATETIME',
             'null' => true,
         ],
     ]);
 
-    $this->forge->addPrimaryKey('tokenId');
-    $this->forge->addForeignKey('user_ID', 'user', 'userId', 'CASCADE', 'CASCADE');
-    $this->forge->createTable('token');
+        $this->forge->addPrimaryKey('token_id');
+        $this->forge->addForeignKey('uu_id', 'user_ms', 'uuid');
+        $this->forge->createTable('token_trs');
     }
 
     public function down()
     {
-        $this->forge->dropTable('token');
+        $this->forge->dropTable('token_trs');
     }
 }
