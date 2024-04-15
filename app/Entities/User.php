@@ -8,7 +8,7 @@ class User extends Entity {
         'username' => '',
         'email' => '',
         'password' => '',
-        'uuid' => null,
+        'uuid_u' => null,
         'create_at' => null,
         'update_at' => null,
         'delete_at' => null,

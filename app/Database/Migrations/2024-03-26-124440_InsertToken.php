@@ -19,22 +19,28 @@ class InsertToken extends Migration
             'type' => 'VARCHAR',
             'constraint' => 32,
         ],
-        'uu_id' => [
+        'user_ID' => [
+            'type' => 'INT',
+            'constraint' => 10,
+            'unsigned' => true,
+        ],
+        'uu_id_t' => [
             'type' => 'VARCHAR',
             'constraint' => 36,
+            'unique' => true,
         ],
-        'created_at' => [
+        'create_at' => [
             'type' => 'DATETIME',
             'null' => true,
         ],
-        'deleted_at' => [
+        'delete_at' => [
             'type' => 'DATETIME',
             'null' => true,
         ],
     ]);
 
         $this->forge->addPrimaryKey('token_id');
-        $this->forge->addForeignKey('uu_id', 'user_ms', 'uuid');
+        $this->forge->addForeignKey('user_ID', 'user_ms', 'user_id');
         $this->forge->createTable('token_trs');
     }
 

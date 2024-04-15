@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\TokenModel;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
+use Ramsey\Uuid\Uuid;
 
 class SignupController extends BaseController{
     use ResponseTrait;
@@ -38,15 +39,15 @@ class SignupController extends BaseController{
         }
 
         $userModel = new UserModel();
-        $uuid = bin2hex(random_bytes(16));
+        $uuid = Uuid::uuid4()->toString();
         $currentDateTime = date('Y-m-d H:i:s');
 
         $user = [
             'username' => $username,
             'email' => $email,
             'password' => $password,
-            'uuid'=>$uuid,
-            'created_at' => $currentDateTime,
+            'uuid_u'=>$uuid,
+            'create_at' => $currentDateTime,
         ];
 
         $userModel->insert($user);

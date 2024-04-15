@@ -27,20 +27,20 @@ class InsertUser extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'uuid' => [
+            'uuid_u' => [
                 'type' => 'VARCHAR',
                 'constraint' => 36,
                 'unique' => true,
             ],
-            'created_at' => [
+            'create_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'updated_at' => [
+            'update_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'deleted_at' => [
+            'delete_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],

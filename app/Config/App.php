@@ -175,4 +175,13 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    public $sessionDriver            = 'CodeIgniter\Session\Handlers\FileHandler';
+    public $sessionCookieName        = 'ordergrill';
+    public $sessionExpiration        = 7200; // Waktu kadaluarsa session dalam detik
+    public $sessionSavePath          = WRITEPATH . 'session';
+    public $sessionMatchIP           = false;
+    public $sessionTimeToUpdate      = 300;
+    public $sessionRegenerateDestroy = false;
+
 }

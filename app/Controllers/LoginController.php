@@ -6,6 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\UserModel;
 use App\Models\TokenModel;
 use DateTime;
+use Ramsey\Uuid\Uuid;
 
 class LoginController extends BaseController{
     use ResponseTrait;
@@ -21,23 +22,23 @@ class LoginController extends BaseController{
    
         if ($user) {
             if ($user->password === $password) {
-                $UUID = $user->uuid; 
+                $user_id = $user->user_id;
+                $UUID = Uuid::uuid4()->toString(); 
 
                 $token = bin2hex(random_bytes(16));
-
-                $time = new DateTime();
                 $currentDateTime = date('Y-m-d H:i:s');
             
                 $tokenModel = new TokenModel();
                 $tokenData = [
-                    'uu_id' => $UUID,
                     'token' => $token,
-                    'created_at' => $currentDateTime
+                    'user_ID'=>$user_id,
+                    'uu_id_t' => $UUID,
+                    'create_at' => $currentDateTime
                 ];
                 $tokenModel->insert($tokenData);
                 $tokenId = $tokenModel->getInsertID();
-
-                return $this->respond(['tokenId' => $tokenId, 'token' => $token,'created_at'=>$currentDateTime,'message' => 'Token generated successfully']);
+                
+                return $this->respond(['tokenId' => $tokenId, 'token' => $token,'create_at'=>$currentDateTime,'message' => 'Token generated successfully']);
             } else {
                 return $this->failUnauthorized('Invalid Username or Password');
             }

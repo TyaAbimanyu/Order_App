@@ -11,9 +11,9 @@ class OrderModel extends Model{
 
     protected $returnType = Order::class;
 
-    protected $allowedFields = ['order_total', 'total_price', 'order_at', 'update_at', 'delete_at', 'menu_id', 'uu_id'];
+    protected $allowedFields = ['order_total', 'total_price', 'menu_id', 'user_ID','uu_id_o','order_at', 'update_at', 'delete_at'];
 
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 
     protected $createdField = 'order_at';
     protected $updatedField = 'update_at';

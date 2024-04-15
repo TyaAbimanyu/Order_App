@@ -10,7 +10,8 @@ class MenuModel extends Model
     protected $primaryKey = 'menu_id';
     protected $returnType = \App\Entities\Menu::class;
 
-    protected $createdField = 'created_at ';
-    protected $updatedField = 'updated_at';
-    protected $allowedFields = ['menu_name', 'menu_price', 'created_at', 'updated_at', 'deleted_at'];
+    protected $createdField = 'create_at ';
+    protected $updatedField = 'update_at';
+    protected $deletedField = 'delete_at';
+    protected $allowedFields = ['menu_name', 'menu_price', 'uu_id_m','create_at', 'update_at', 'delete_at'];
 }

@@ -23,6 +23,21 @@ class InsertOrder extends Migration
                 'type' => 'INT',
                 'constraint' => 100,
             ],
+            'menu_id' => [
+                'type' => 'INT',
+                'constraint' => 10,
+                'unsigned' => true,
+            ],
+            'user_ID' => [
+                'type' => 'INT',
+                'constraint' => 10,
+                'unsigned' => true,
+            ],
+            'uu_id_o' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'unique' => true,
+            ],
             'order_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -35,20 +50,11 @@ class InsertOrder extends Migration
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'menu_id' => [
-                'type' => 'INT',
-                'constraint' => 10,
-                'unsigned' => true,
-            ],
-            'uu_id' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
         ]);
 
         $this->forge->addPrimaryKey('order_id');
         $this->forge->addForeignKey('menu_id', 'menu_ms', 'menu_id');
-        $this->forge->addForeignKey('uu_id', 'user_ms', 'uuid');
+        $this->forge->addForeignKey('user_ID', 'user_ms', 'user_id');
         $this->forge->createTable('order_trs');
     }
 

@@ -11,8 +11,8 @@ class TokenModel extends Model
     protected $primaryKey = 'token_id';
     protected $returnType = Token::class;
     protected $useTimestamps = false;
-    protected $createdField = 'created_at';
-    protected $deletedField = 'deleted_at';
+    protected $createdField = 'create_at';
+    protected $deletedField = 'delete_at';
 
-    protected $allowedFields = ['token', 'uu_id', 'created_at', 'deleted_at'];
+    protected $allowedFields = ['token', 'user_ID','uu_id_t', 'create_at', 'delete_at'];
 }

@@ -23,15 +23,20 @@ class Menu extends Migration
                 'type' => 'INT',
                 'constraint' => 100,
             ],
-            'created_at' => [
+            'uu_id_m' => [
+                'type' => 'VARCHAR',
+                'constraint' => 36,
+                'unique' => true,
+            ],
+            'create_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'updated_at' => [
+            'update_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'deleted_at' => [
+            'delete_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],

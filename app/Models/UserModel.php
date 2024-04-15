@@ -10,8 +10,10 @@ class UserModel extends Model{
     protected $primaryKey = 'user_id';
 
     protected $returnType = User::class;
-    protected $createdField = 'created_at ';
-    protected $updatedField = 'updated_at';
+    protected $useTimeStamps = false;
+    protected $createdField = 'create_at ';
+    protected $updatedField = 'update_at';
+    protected $deletedField = 'delete_at';
 
-    protected $allowedFields = ['username', 'email', 'password', 'uuid','created_at', 'updated_at','deleted_at'];
+    protected $allowedFields = ['username', 'email', 'password', 'uuid_u','create_at', 'update_at','delete_at'];
 }

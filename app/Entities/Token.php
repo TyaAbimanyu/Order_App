@@ -8,8 +8,9 @@ class Token extends Entity
     protected $attributes = [
         'token_id'   => null,
         'token'     => null,
-        'uu_id'    => null,
-        'crete_at' => null,
+        'user_ID' => null,
+        'uu_id_t'    => null,
+        'create_at' => null,
         'delete_at' => null,
     ];
 }

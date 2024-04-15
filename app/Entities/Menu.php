@@ -10,6 +10,7 @@ class Menu extends Entity
         'menu_id' => null,
         'menu_name' => '',
         'menu_price' => '',
+        'uu_id_m'=> null,
         'create_at' => null,
         'update_at' => null,
         'delete_at' => null,
