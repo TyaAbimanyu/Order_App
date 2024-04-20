@@ -25,6 +25,9 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+
+        //Custom Rules
+        \App\Validations\validationPassword::class,
     ];
 
     /**
@@ -41,4 +44,23 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    public $validationPassword = [
+        'username' =>[
+            'label' => 'username',
+            'rules' => 'required|min_length[8]|alpha_numeric'
+        ],
+        'email' =>[
+            'label'  => 'email',
+            'rules' =>  'required|valid_email|is_unique[user_ms.email]'
+        ],
+        'password'=>[
+            'label'=>'password',
+            'rules'=>'required|passwordInvalid[password]'
+        ],
+        'confirmPassword'=>[
+            'label'=>'confirm password',
+            'rules'=>'required|matches[password]'
+        ]
+    ];
 }

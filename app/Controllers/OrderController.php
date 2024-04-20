@@ -9,10 +9,29 @@ use App\Models\MenuModel;
 
 class OrderController extends BaseController{
     use ResponseTrait;
+    function  checkHeader(){
+        $authorizationHeader = $this->request->getHeaderLine('Authorization');  
+
+        if(empty($authorizationHeader)) {
+            return 'Header is Empty';
+        }
+
+        $authorizationParts = explode(' ', $authorizationHeader);
+
+        if(count($authorizationParts) !== 2 || strtolower($authorizationParts[0]) !== 'bearer') {            
+            return 'Header not Valid';
+        }
+
+        $token = $authorizationParts[1];
+
+        return $token;
+    }
 
     function getOrder(){
-        $data = json_decode(file_get_contents('php://input'), true); 
-        $token = $data['token'];
+        // $data = json_decode(file_get_contents('php://input'), true); 
+        // $data = $this->request->getPost();
+        // $token = $data['token'];
+        $token=$this->checkHeader();
 
         $tokenModel = new TokenModel();
         $tokenData = $tokenModel->where('token', $token)->first();
@@ -45,102 +64,89 @@ class OrderController extends BaseController{
         }
     }
 
-    function deleteOrder(){
-        $data = json_decode(file_get_contents('php://input'), true); 
-        $token = $data['token'];
+    function deleteOrder($uu_id_o){
+       $orderModel = new OrderModel();
+        $orderData = $orderModel->where('uu_id_o', $uu_id_o);
 
-        $tokenModel = new TokenModel();
-        $tokenData = $tokenModel->where('token', $token)->first();
+        if($orderData){
+            $deleted = $orderModel->delete();
 
-        if($tokenData){
-            $user_id = $tokenData->user_ID;
-
-            $orderModel = new OrderModel();
-            $orderData = $orderModel->where('user_id', $user_id)->first();
-
-            if ($orderData) {
-                $order_id = $orderData->order_id;
-                $order_id_data = $orderModel->where('order_id', $order_id)->first();
-                if($order_id_data){
-                    $deleted = $orderModel->delete($order_id);
-                }else{
-                    return $this->failServerError('Gagal menghapus order');
-                } 
-                return $this->respondDeleted('Order Berhasil Dihapus');
+            if($deleted){
+                $response = [
+                    'status' =>true,
+                    'message'=>'Success Deleted Data'
+                ];
             }else{
-                return $this->failNotFound('Data Order tidak ditemukan');
+                $response = [
+                    'status' =>false,
+                    'message'=>'Failed Deleted Data'
+                ];
             }
-        } else{
-            return $this->failNotFound('Token tidak ditemukan');
+        }else{
+            $response = [
+                'status' =>false,
+                'message'=>'Order Data Not Found'
+            ];
         }
+        return $this->respond( $response );
     }
 
     function updateOrder(){
-        $data = json_decode(file_get_contents('php://input'), true); 
-        $token = $data['token'];
+        // $data = json_decode(file_get_contents('php://input'), true); 
+        $data = $this->request->getRawInput();
 
-        $tokenModel = new TokenModel();
-        $tokenData = $tokenModel->where('token', $token)->first();
-
-        if($tokenData){
-            $user_id = $tokenData->user_ID;
-            $orderModel = new OrderModel();
-             
-            $orderData = $orderModel->where('user_ID', $user_id)->first();
-
-            if($orderData){
-                $order_id = $orderData->order_id;
-
-                $order_id_data = $orderModel->find($order_id);
-
-                if($order_id_data){
-                    if(isset($data['menu_name']) && isset($data['order_total'])) {
-                        $menu_name = $data['menu_name'];
-                        $order_total = $data['order_total'];
+        $uu_id_o = $data['uu_id_o'];
     
-                        // Mencari menu berdasarkan nama
-                        $menuModel = new MenuModel();
-                        $menu = $menuModel->where('menu_name', $menu_name)->first();
+        $orderModel = new OrderModel();
+        $orderData = $orderModel->where('uu_id_o', $uu_id_o)->first();
     
-                        if($menu){
-                            $menu_id = $menu->menu_id;
-                            $menu_price = $menu->menu_price;
+        if($orderData){
+            if(isset($data['menu_name']) && isset($data['order_total'])) {
+                $menu_name = $data['menu_name'];
+                $order_total = $data['order_total'];
     
-                            // Menghitung total harga pesanan
-                            $total_price = $menu_price * $order_total;
+                // Mencari menu berdasarkan nama
+                $menuModel = new MenuModel();
+                $menu = $menuModel->where('menu_name', $menu_name)->first();
+    
+                if($menu){
+                    $menu_id = $menu->menu_id;
+                    $menu_price = $menu->menu_price;
+    
+                    $total_price = $menu_price * $order_total;
 
-                            $data = [
-                                'menu_id' => $menu_id,
-                                'order_total' => $order_total,
-                                'total_price' => $total_price,
-                                'update_at' => date('Y-m-d H:i:s')
-                            ];
-                            
-                            $orderModel->update($order_id, $data);
-
+                    $data = [
+                        'menu_id' => $menu_id,
+                        'order_total' => $order_total,
+                        'total_price' => $total_price,
+                        'update_at' => date('Y-m-d H:i:s')
+                    ];
+                    
+                    $orderModel->update($orderData->order_id, $data);
     
-                            $response = [
-                                'status' => true,
-                                'message' => 'Successfully added order!'
-                            ];
-                        } else {
-                            $response = [
-                                'status' => false,
-                                'message' => 'Failed to add order: Menu not found'
-                            ];
-                        }
-                    } else {
-                        $response = [
-                            'status' => false,
-                            'message' => 'Failed to add order: Menu name or order total is missing'
-                        ];
-                    }
-                }else{
-                    return $this->failNotFound('Order tidak ditemukan');
+                    $response = [
+                        'status' => true,
+                        'message' => 'Successfully updated order!'
+                    ];
+                } else {
+                    $response = [
+                        'status' => false,
+                        'message' => 'Failed to update order: Menu not found'
+                    ];
                 }
+            } else {
+                $response = [
+                    'status' => false,
+                    'message' => 'Failed to update order: Menu name or order total is missing'
+                ];
             }
-        }else{
-            return $this->failNotFound('Data Order tidak ditemukan');
-         }
+        } else {
+            $response = [
+                'status' => false,
+                'message' => 'Failed to update order: Order not found'
+            ];
+        }
+    
+        return $response;
     }
 }

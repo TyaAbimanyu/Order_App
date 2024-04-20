@@ -11,6 +11,24 @@ session_start();
 class MenuController extends BaseController{
     use ResponseTrait;
 
+    function  checkHeader(){
+        $authorizationHeader = $this->request->getHeaderLine('Authorization');  
+
+        if(empty($authorizationHeader)) {
+            return 'Header is Empty';
+        }
+
+        $authorizationParts = explode(' ', $authorizationHeader);
+
+        if(count($authorizationParts) !== 2 || strtolower($authorizationParts[0]) !== 'bearer') {            
+            return 'Header not Valid';
+        }
+
+        $token = $authorizationParts[1];
+
+        return $token;
+    }
+
     function menu(){
   
         $menuModel = new MenuModel();
@@ -22,7 +40,8 @@ class MenuController extends BaseController{
         foreach($menuData as $menu){
             $menuList[]=[
                 'menu_name' => $menu->menu_name,
-                'menu_price' => $menu->menu_price
+                'menu_price' => $menu->menu_price,
+                'uu_id_m' => $menu->uu_id_m
             ];
         }
 
@@ -30,9 +49,11 @@ class MenuController extends BaseController{
     }
 
     function logout(){
-        $data=json_decode(file_get_contents( 'php://input'), true); 
+        // $data = $this->request->getPost();
 
-        $checkToken  = $data['token'];
+        // $checkToken  = $data['token'];
+
+        $checkToken = $this->checkHeader();
 
         $tokenModel = new TokenModel();
 
@@ -44,10 +65,11 @@ class MenuController extends BaseController{
     }
 
     function validateToken(){
-        $data=json_decode(file_get_contents( 'php://input'), true); 
+        // $data = $this->request->getPost();
 
-        $checkToken  = $data['token'];
+        // $checkToken = $data['token'];
 
+        $checkToken = $this->checkHeader();
         $tokenModel = new TokenModel();
         $checker = $tokenModel->where('token',$checkToken)->first();
 
@@ -57,4 +79,6 @@ class MenuController extends BaseController{
             return $this->respond(['massage'=> 'Failed','success'=>false]);    
         }
     }
+
+   
 }

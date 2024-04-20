@@ -12,10 +12,10 @@ class LoginController extends BaseController{
     use ResponseTrait;
 
     public function login(){
-        $data = $this->request->getJSON();
-
-        $username = $data->username;
-        $password = $data->password;
+         $data = $this->request->getPost();
+        //$data = json_decode(file_get_contents('php://input'), true); 
+        $username = $data['username'];
+        $password = $data['password'];
 
         $userModel = new UserModel();
         $user = $userModel->where('username', $username)->first();

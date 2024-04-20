@@ -11,37 +11,24 @@ class SignupController extends BaseController{
     use ResponseTrait;
 
     public function signup(){
-        $data = $this->request->getJSON();
+        $validate = \Config\Services::validation();
+        // $data = json_decode(file_get_contents('php://input'), true); 
+        $data = $this->request->getPost();
 
-        $username = $data->username;
-        $email = $data->email;
-        $password = $data->password;
 
-        if(strlen($username) < 8 || strlen($username) > 16){
-            return $this->response->setJSON([
-                'status' => false,
-                'message'=> 'Username must be between 8 until 16 character'
-            ]);
+        $validate->setRuleGroup('validationPassword');
+
+        if($validate->run($data)===false){
+            return $this->fail(['message'=>$validate->getErrors()]);
         }
 
-        if(!filter_var($email. FILTER_VALIDATE_EMAIL)){
-            return $this->response->setJSON([
-                'status'=>'error',
-                'message'=>'Invalid email Format'
-            ]);
-        }
-
-        if(strlen($password)<8 || strlen($password)>16 || !preg_match('/^(?=.*[a-zA-Z])(?=.*\d).{8,16}$/', $password)){
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message'=> 'Password must be between 8 and 16 Characters and contain one number and one letter'
-            ]);
-        }
+        $username = $data['username'];
+        $email = $data['email'];
+        $password = $data['password'];
 
         $userModel = new UserModel();
         $uuid = Uuid::uuid4()->toString();
         $currentDateTime = date('Y-m-d H:i:s');
-
         $user = [
             'username' => $username,
             'email' => $email,

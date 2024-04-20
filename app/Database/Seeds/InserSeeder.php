@@ -10,10 +10,10 @@ class InserSeeder extends Seeder
 {
     public function run()
     {
-       $this->insertUser();
+       //$this->insertUser();
        $this->insertMenu();
-       $this->insertOrder();
-       $this->insertToken();
+       //$this->insertOrder();
+       //$this->insertToken();
     }
 
     private function insertUser(){
@@ -62,18 +62,23 @@ class InserSeeder extends Seeder
             'create_at'=> $currentDateTime
         ];
         $menuData1=[
-            'menu_name' => 'Nasi Gila Coklat',
+            'menu_name' => 'Nasi',
             'menu_price' => 25000,
             'uu_id_m'=> $uuid,
             'create_at'=> $currentDateTime
         ];$menuData2=[
-            'menu_name' => 'Rendang Merah',
+            'menu_name' => 'Rendang',
             'menu_price' => 15000,
+            'uu_id_m'=> $uuid,
+            'create_at'=> $currentDateTime
+        ];$menuData3=[
+            'menu_name' => 'Ayam',
+            'menu_price' => 30000,
             'uu_id_m'=> $uuid,
             'create_at'=> $currentDateTime
         ];
 
-        $this->db->table('menu_ms')->insert($menuData);
+        $this->db->table('menu_ms')->insert($menuData3);
     }
 
     private function insertOrder(){
