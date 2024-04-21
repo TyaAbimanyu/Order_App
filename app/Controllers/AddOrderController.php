@@ -34,6 +34,13 @@ class AddOrderController extends BaseController {
         $data = $this->request->getPost(); 
         $token = $this->checkHeader(); 
 
+        // $validation = \Config\Services::validation();
+        // $validation->setRuleGroup('addOrderValidation');
+
+        // if (!$validation->run($data)) {
+        //     return $this->fail((['message' => $validation->getErrors()]));
+        // }
+
         $menu_name = $data['menu_name'];
         $order_total = $data['order_total'];
 

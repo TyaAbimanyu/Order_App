@@ -28,6 +28,8 @@ class Validation extends BaseConfig
 
         //Custom Rules
         \App\Validations\validationPassword::class,
+        \App\Validations\validationUsername::class,
+        // \App\Validations\validationOrder::class,
     ];
 
     /**
@@ -63,4 +65,26 @@ class Validation extends BaseConfig
             'rules'=>'required|matches[password]'
         ]
     ];
+
+    public $loginValidation = [
+        'username' =>[
+            'label' => 'Username',
+            'rules' => 'required'
+        ],
+        'password' =>[
+            'label' => 'Password',
+            'rules' => 'required|validateLogin[password]'
+        ]
+    ];
+
+    // public $addOrderValidation = [
+    //     'menuName' => [
+    //         'label' => 'Menu Name',
+    //         'rules' => 'validateMenuNameExist[menuName]'
+    //     ],
+    //     'quantity' => [
+    //         'label' => 'Quantity Your Order',
+    //         'rules' => 'numeric'
+    //     ]
+    // ]; 
 }

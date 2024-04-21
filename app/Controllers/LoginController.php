@@ -12,8 +12,15 @@ class LoginController extends BaseController{
     use ResponseTrait;
 
     public function login(){
-         $data = $this->request->getPost();
-        //$data = json_decode(file_get_contents('php://input'), true); 
+        $data = $this->request->getPost();
+         
+        $validation = \Config\Services::validation();
+        $validation->setRuleGroup('loginValidation');
+
+        if(!$validation->run($data)){
+            return $this->fail((['message'=>$validation->getErrors()])); 
+        }
+         
         $username = $data['username'];
         $password = $data['password'];
 
