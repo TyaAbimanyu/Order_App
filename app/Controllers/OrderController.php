@@ -95,6 +95,13 @@ class OrderController extends BaseController{
         // $data = json_decode(file_get_contents('php://input'), true); 
         $data = $this->request->getRawInput();
 
+        $validation = \Config\Services::validation();
+        $validation->setRuleGroup('UpdateOrderValidation');
+
+        if(!$validation->run($data)){
+            return $this->fail(['message'=>$validation->getErrors()]);
+        }
+
         $uu_id_o = $data['uu_id_o'];
     
         $orderModel = new OrderModel();

@@ -29,7 +29,7 @@ class Validation extends BaseConfig
         //Custom Rules
         \App\Validations\validationPassword::class,
         \App\Validations\validationUsername::class,
-        // \App\Validations\validationOrder::class,
+        \App\Validations\validationOrder::class,
     ];
 
     /**
@@ -69,7 +69,7 @@ class Validation extends BaseConfig
     public $loginValidation = [
         'username' =>[
             'label' => 'Username',
-            'rules' => 'required'
+            'rules' => 'required|validateUser[username]'
         ],
         'password' =>[
             'label' => 'Password',
@@ -77,14 +77,24 @@ class Validation extends BaseConfig
         ]
     ];
 
-    // public $addOrderValidation = [
-    //     'menuName' => [
-    //         'label' => 'Menu Name',
-    //         'rules' => 'validateMenuNameExist[menuName]'
-    //     ],
-    //     'quantity' => [
-    //         'label' => 'Quantity Your Order',
-    //         'rules' => 'numeric'
-    //     ]
-    // ]; 
+    public $addOrderValidation = [
+        'menu_name'=>[
+            'label'=> 'Menu Name',
+            'rules'=> 'required|validateMenuName[menu_ms.menu_name]|in_list[Burger Kotak, Nasi, Rendang, Ayam]'
+        ],
+        'order_total'=>[
+            'label'=>'Quantity',
+            'rules'=>'required|integer'
+        ],
+    ];
+    public $UpdateOrderValidation = [
+        'menu_name'=>[
+            'label'=> 'Menu Name',
+            'rules'=> 'required|validateMenuName[menu_ms.menu_name]|in_list[Burger Kotak, Nasi, Rendang, Ayam]'
+        ],
+        'order_total'=>[
+            'label'=>'Quantity',
+            'rules'=>'required|integer'
+        ],
+    ]; 
 }

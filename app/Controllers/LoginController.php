@@ -18,7 +18,8 @@ class LoginController extends BaseController{
         $validation->setRuleGroup('loginValidation');
 
         if(!$validation->run($data)){
-            return $this->fail((['message'=>$validation->getErrors()])); 
+            $errorUser = $validation->getErrors();
+            return $this->fail((['message'=>$errorUser])); 
         }
          
         $username = $data['username'];
@@ -47,10 +48,8 @@ class LoginController extends BaseController{
                 
                 return $this->respond(['tokenId' => $tokenId, 'token' => $token,'create_at'=>$currentDateTime,'message' => 'Token generated successfully']);
             } else {
-                return $this->failUnauthorized('Invalid Username or Password');
+                return $this->fail('Invalid Username or Password');
             }
-        } else {
-            return $this->failUnauthorized('User not found');
         }
     }
 }

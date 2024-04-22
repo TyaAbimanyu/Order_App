@@ -30,16 +30,15 @@ class AddOrderController extends BaseController {
     }
 
     public function addOrder() {
-        // $data = json_decode(file_get_contents('php://input'), true);
         $data = $this->request->getPost(); 
-        $token = $this->checkHeader(); 
+        $token = $this->checkHeader();
+        
+        $validation = \Config\Services::validation();
+        $validation->setRuleGroup('addOrderValidation');
 
-        // $validation = \Config\Services::validation();
-        // $validation->setRuleGroup('addOrderValidation');
-
-        // if (!$validation->run($data)) {
-        //     return $this->fail((['message' => $validation->getErrors()]));
-        // }
+        if(!$validation->run($data)){
+            return $this->fail(['message'=>$validation->getErrors()]);
+        }
 
         $menu_name = $data['menu_name'];
         $order_total = $data['order_total'];
@@ -48,7 +47,7 @@ class AddOrderController extends BaseController {
         $tokenData = $tokenModel->where('token', $token)->first();
 
         $user_ID = $tokenData->user_ID;
-         $UUID = Uuid::uuid4()->toString(); 
+        $UUID = Uuid::uuid4()->toString(); 
         
          if($menu_name && $order_total) {
             // Mencari menu berdasarkan nama

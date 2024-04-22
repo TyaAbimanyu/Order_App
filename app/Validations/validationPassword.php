@@ -2,7 +2,7 @@
 namespace App\Validations;
 
 class validationPassword{
-    public function passwordInvalid($password, $fields, $data, string $error = null):bool{
+    public function passwordInvalid($password, $fields, $data, string &$error = null):bool{
         if(strlen($password)<8 && strlen($password)>16 || preg_match('/^(?=.*[a-zA-Z])(?=.*\d).{8,16}$/', $password)){
             return true;
         }else{
