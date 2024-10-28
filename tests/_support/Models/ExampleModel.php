@@ -9,7 +9,7 @@ class ExampleModel extends Model
     protected $table          = 'factories';
     protected $primaryKey     = 'id';
     protected $returnType     = 'object';
-    protected $useSoftDeletes = false;
+    protected $useuseSoftDeletes = false;
     protected $allowedFields  = [
         'name',
         'uid',
