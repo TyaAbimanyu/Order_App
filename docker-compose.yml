@@ -17,18 +17,19 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
     ports:
-      - 5432:${DB_PORT:-5432}
+      - "${DB_PORT:-5431}:5432"
     volumes:
       - pgsql_data:/var/lib/postgresql/data
       - ./.docker/postgres/init:/docker-entrypoint-initdb.d/
       - ./.docker/postgres/postgres.conf:/etc/postgresql.conf
     networks:
       - jobseeker-network
+
   php:
     build:
       args:
-          user: jobseeker-user
-          uid: 1000
+        user: jobseeker-user
+        uid: 1000
       context: .docker
       dockerfile: Dockerfile
     image: jobseeker-php
@@ -37,19 +38,35 @@ services:
     tty: true
     depends_on:
       - db
-      # environment:
-      # DATABASE_URL: postgresql://${DB_USERNAME}:${DB_PASSWORD}@127.0.0.1:5432/${DB_DATABASE}
+    environment:
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_AUTH_DOMAIN=${FIREBASE_AUTH_DOMAIN}
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
+      - FIREBASE_STORAGE_BUCKET=${FIREBASE_STORAGE_BUCKET}
+      - FIREBASE_MESSAGING_SENDER_ID=${FIREBASE_MESSAGING_SENDER_ID}
+      - FIREBASE_APP_ID=${FIREBASE_APP_ID}
+      - FIREBASE_MEASUREMENT_ID=${FIREBASE_MEASUREMENT_ID}
+      - FIREBASE_DATABASE_URL=${FIREBASE_DATABASE_URL}
+      - FIREBASE_CREDENTIALS_PATH=${FIREBASE_CREDENTIALS_PATH}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - GOOGLE_CLOUD_STORAGE_DISABLE_GRPC=true
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - jobseeker-network
+
   nginx:
     image: nginx:1.17-alpine
     container_name: jobseeker-nginx
     restart: unless-stopped
     ports:
-      - 8080:80
+      - "8080:80"
     depends_on:
       - php
     volumes:
@@ -57,4 +74,3 @@ services:
       - ./.docker/nginx:/etc/nginx/conf.d
     networks:
       - jobseeker-network
-

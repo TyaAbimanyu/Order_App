@@ -8,6 +8,7 @@ ARG uid
 # installs basic tools, then postgres ppa and postgresql-client packages 
 # (and some other required dependencies). It then installs and configures several php extensions 
 # including pdo_pgsql. Finally, it downloads and installs composer in the image.
+
 RUN apt-get update \
     && apt-get install -y gnupg curl wget ca-certificates unzip lsb-release \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
@@ -19,12 +20,19 @@ RUN apt-get update \
         libpq-dev \
         libzip-dev \
         postgresql-client \
+        # Dependencies for gRPC
+        zlib1g-dev \
+        libssl-dev \
+        cmake \
+        build-essential \
+        autoconf \
+        libtool \
+        pkg-config \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install intl pdo pdo_pgsql pgsql zip bcmath pcntl exif \
     && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && pecl install grpc \
+    && docker-php-ext-enable grpc
 
 # Install gd
 RUN apt-get update \
@@ -60,9 +68,14 @@ ENV PHP_MEMORY_LIMIT=1024M
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
+    
 
 # COPY docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 # COPY . /var/www/html
+RUN composer require google/cloud-firestore
+
+RUN pecl install grpc
+RUN docker-php-ext-enable grpc
 
 # Set working directory
 WORKDIR /var/www
