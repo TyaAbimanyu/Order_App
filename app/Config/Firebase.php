@@ -14,8 +14,8 @@ class Firebase extends BaseConfig
     'measurementId' => getenv('FIREBASE_MEASUREMENT_ID')
   ];
 
-  public $databaseUrl = 3;
-  public $credentials = 4;
+  public $databaseUrl = 1;
+  public $credentials = 2;
 
   public function __construct()
   {
